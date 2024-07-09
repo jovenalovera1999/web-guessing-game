@@ -8,6 +8,7 @@ function Entry() {
 
   const [playerOneName, setPlayerOneName] = useState("");
   const [playerTwoName, setPlayerTwoName] = useState("");
+  const [scoreGoal, setScoreGoal] = useState("");
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -15,6 +16,8 @@ function Entry() {
       setPlayerOneName(value);
     } else if (name === "player_two_name") {
       setPlayerTwoName(value);
+    } else if (name === "score_goal") {
+      setScoreGoal(value);
     }
   };
 
@@ -47,11 +50,24 @@ function Entry() {
                   onChange={handleInput}
                 />
               </div>
+              <div className="mb-3">
+                <label htmlFor="score_goal">Score Goal</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="score_goal"
+                  id="score_goal"
+                  value={scoreGoal}
+                  onChange={handleInput}
+                />
+              </div>
               <div className="d-flex justify-content-center">
                 <Link
                   to={`/game?playerOneName=${encodeURIComponent(
                     playerOneName
-                  )}&playerTwoName=${encodeURIComponent(playerTwoName)}`}
+                  )}&playerTwoName=${encodeURIComponent(
+                    playerTwoName
+                  )}&scoreGoal=${scoreGoal}`}
                   className="btn btn-primary"
                 >
                   Start Game

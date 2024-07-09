@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 function useQuery() {
@@ -13,6 +13,7 @@ function Game() {
   const query = useQuery();
   const playerOneName = query.get("playerOneName") || "Player 1";
   const playerTwoName = query.get("playerTwoName") || "Player 2";
+  const scoreGoal = query.get("scoreGoal") || "Score Goal";
 
   const [resultPlayerOne, setResultPlayerOne] = useState("");
   const [resultPlayerTwo, setResultPlayerTwo] = useState("");
@@ -667,6 +668,20 @@ function Game() {
     );
   }
 
+  // const saveGame = async (e: FormEvent) => {
+  //   e.preventDefault();
+
+  //   const csrfToken = document
+  //     .querySelector("meta[name='csrf-token']")
+  //     ?.getAttribute("content");
+
+  //   const res = axios;
+  // };
+
+  const isScoreGoalReached =
+    scorePlayer1 === parseInt(scoreGoal) ||
+    scorePlayer2 === parseInt(scoreGoal);
+
   return (
     <>
       <div className="container">
@@ -677,14 +692,30 @@ function Game() {
           New Game
         </button>
         {gameContent}
-        <div className="row mt-3">
+        <div className="row mt-3 mb-3">
           <div className="col">
-            <h1>Player 1: {playerOneName}</h1>
+            <h2>Player 1: {playerOneName}</h2>
             <h3>{scorePlayer1}</h3>
           </div>
           <div className="col">
-            <h1>Player 2: {playerTwoName}</h1>
+            <h2>Player 2: {playerTwoName}</h2>
             <h3>{scorePlayer2}</h3>
+          </div>
+        </div>
+        <div className="row mb-3">
+          <h1>
+            <u>Score Goal:</u> {scoreGoal}
+          </h1>
+          <div className="mt-3">
+            {isScoreGoalReached && (
+              <h2>
+                WINNER:{" "}
+                {scorePlayer1 === parseInt(scoreGoal)
+                  ? playerOneName
+                  : playerTwoName}
+                {/* <form onSubmit={saveGame}></form> */}
+              </h2>
+            )}
           </div>
         </div>
       </div>
