@@ -14,6 +14,10 @@ function Game() {
   const playerOneName = query.get("playerOneName") || "Player 1";
   const playerTwoName = query.get("playerTwoName") || "Player 2";
 
+  const [resultPlayerOne, setResultPlayerOne] = useState("");
+  const [resultPlayerTwo, setResultPlayerTwo] = useState("");
+  const [isSuccessPlayerOne, setIsSuccessPlayerOne] = useState(false);
+  const [isSuccessPlayerTwo, setIsSuccessPlayerTwo] = useState(false);
   const [isInputDisabled, setIsInputDisabled] = useState(false);
 
   const [termPlayer1, setTermPlayer1] = useState("");
@@ -137,6 +141,13 @@ function Game() {
     setCountryQuestionIndex(Math.floor(Math.random() * 10));
     setFoodQuestionIndex(Math.floor(Math.random() * 8));
     setIsInputDisabled(false);
+
+    if (isSuccessPlayerOne || isSuccessPlayerTwo) {
+      setResultPlayerOne("");
+      setResultPlayerTwo("");
+      setIsSuccessPlayerOne(false);
+      setIsSuccessPlayerTwo(false);
+    }
   };
 
   const handleScoreUpdate = (
@@ -150,12 +161,40 @@ function Game() {
 
       if (!isNaN(guessedNumber) && guessedNumber === secret) {
         if (player === "Player1") {
+          setIsSuccessPlayerOne(true);
+          setResultPlayerOne("Congratulations! You guessed the number!");
           setScorePlayer1(scorePlayer1 + 1);
         } else {
+          setIsSuccessPlayerTwo(true);
+          setResultPlayerTwo("Congratulations! You guessed the number!");
           setScorePlayer2(scorePlayer2 + 1);
         }
 
         setIsInputDisabled(true);
+      } else if (!isNaN(guessedNumber) && guessedNumber < secret) {
+        if (player === "Player1") {
+          setIsSuccessPlayerOne(false);
+          setResultPlayerOne("Your guess number is too low!");
+        } else if (player === "Player2") {
+          setIsSuccessPlayerTwo(false);
+          setResultPlayerTwo("Your guess number is too low!");
+        }
+      } else if (!isNaN(guessedNumber) && guessedNumber > secret) {
+        if (player === "Player1") {
+          setIsSuccessPlayerOne(false);
+          setResultPlayerOne("Your guess number is too high!");
+        } else if (player === "Player2") {
+          setIsSuccessPlayerTwo(false);
+          setResultPlayerTwo("Your guess number is too high!");
+        }
+      } else {
+        if (player === "Player1") {
+          setIsSuccessPlayerOne(false);
+          setResultPlayerOne("Invalid input!");
+        } else if (player === "Player2") {
+          setIsSuccessPlayerTwo(false);
+          setResultPlayerTwo("Invalid input!");
+        }
       }
     } else if (category === "Animal") {
       const currentQuestionAnswer =
@@ -164,19 +203,29 @@ function Game() {
         ].toLowerCase();
 
       if (answer && answer.toLowerCase() === currentQuestionAnswer) {
-        if (
-          player === "Player1" &&
-          answer.toLowerCase() === currentQuestionAnswer
-        ) {
+        if (player === "Player1") {
+          setIsSuccessPlayerOne(true);
+          setResultPlayerOne("Correct answer!");
+
           setScorePlayer1(scorePlayer1 + 1);
-        } else if (
-          player === "Player2" &&
-          answer.toLowerCase() === currentQuestionAnswer
-        ) {
+        } else if (player === "Player2") {
+          setIsSuccessPlayerTwo(true);
+          setResultPlayerTwo("Correct answer!");
+
           setScorePlayer2(scorePlayer2 + 1);
         }
 
         setIsInputDisabled(true);
+      } else if (player === "Player1") {
+        setIsSuccessPlayerOne(false);
+        setResultPlayerOne("Wrong answer!");
+
+        handleNewGame();
+      } else if (player === "Player2") {
+        setIsSuccessPlayerTwo(false);
+        setResultPlayerTwo("Wrong answer");
+
+        handleNewGame();
       }
     } else if (category === "Color") {
       const currentQuestionAnswer =
@@ -185,19 +234,29 @@ function Game() {
         ].toLowerCase();
 
       if (answer && answer.toLowerCase() === currentQuestionAnswer) {
-        if (
-          player === "Player1" &&
-          answer.toLowerCase() === currentQuestionAnswer
-        ) {
+        if (player === "Player1") {
+          setIsSuccessPlayerOne(true);
+          setResultPlayerOne("Correct answer!");
+
           setScorePlayer1(scorePlayer1 + 1);
-        } else if (
-          player === "Player2" &&
-          answer.toLowerCase() === currentQuestionAnswer
-        ) {
+        } else if (player === "Player2") {
+          setIsSuccessPlayerTwo(true);
+          setResultPlayerTwo("Correct answer!");
+
           setScorePlayer2(scorePlayer2 + 1);
         }
 
         setIsInputDisabled(true);
+      } else if (player === "Player1") {
+        setIsSuccessPlayerOne(false);
+        setResultPlayerOne("Wrong answer!");
+
+        handleNewGame();
+      } else if (player === "Player2") {
+        setIsSuccessPlayerTwo(false);
+        setResultPlayerTwo("Wrong answer");
+
+        handleNewGame();
       }
     } else if (category === "Food") {
       const currentQuestionAnswer =
@@ -206,19 +265,29 @@ function Game() {
         ].toLowerCase();
 
       if (answer && answer.toLowerCase() === currentQuestionAnswer) {
-        if (
-          player === "Player1" &&
-          answer.toLowerCase() === currentQuestionAnswer
-        ) {
+        if (player === "Player1") {
+          setIsSuccessPlayerOne(true);
+          setResultPlayerOne("Correct answer!");
+
           setScorePlayer1(scorePlayer1 + 1);
-        } else if (
-          player === "Player2" &&
-          answer.toLowerCase() === currentQuestionAnswer
-        ) {
+        } else if (player === "Player2") {
+          setIsSuccessPlayerTwo(true);
+          setResultPlayerTwo("Correct answer!");
+
           setScorePlayer2(scorePlayer2 + 1);
         }
 
         setIsInputDisabled(true);
+      } else if (player === "Player1") {
+        setIsSuccessPlayerOne(false);
+        setResultPlayerOne("Wrong answer!");
+
+        handleNewGame();
+      } else if (player === "Player2") {
+        setIsSuccessPlayerTwo(false);
+        setResultPlayerTwo("Wrong answer");
+
+        handleNewGame();
       }
     } else if (category === "Country") {
       const currentQuestionAnswer =
@@ -227,21 +296,40 @@ function Game() {
         ].toLowerCase();
 
       if (answer && answer.toLowerCase() === currentQuestionAnswer) {
-        if (
-          player === "Player1" &&
-          answer.toLowerCase() === currentQuestionAnswer
-        ) {
+        if (player === "Player1") {
+          setIsSuccessPlayerOne(true);
+          setResultPlayerOne("Correct answer!");
+
           setScorePlayer1(scorePlayer1 + 1);
-        } else if (
-          player === "Player2" &&
-          answer.toLowerCase() === currentQuestionAnswer
-        ) {
+        } else if (player === "Player2") {
+          setIsSuccessPlayerTwo(true);
+          setResultPlayerTwo("Correct answer!");
+
           setScorePlayer2(scorePlayer2 + 1);
         }
 
         setIsInputDisabled(true);
+      } else if (player === "Player1") {
+        setIsSuccessPlayerOne(false);
+        setResultPlayerOne("Wrong answer!");
+
+        handleNewGame();
+      } else if (player === "Player2") {
+        setIsSuccessPlayerTwo(false);
+        setResultPlayerTwo("Wrong answer");
+
+        handleNewGame();
       }
     }
+  };
+
+  const handleSubmit = (
+    player: "Player1" | "Player2",
+    term: string,
+    category: "Number" | "Animal" | "Color" | "Food" | "Country",
+    answer?: string
+  ) => {
+    handleScoreUpdate(player, term, category, answer);
   };
 
   let gameContent;
@@ -256,42 +344,54 @@ function Game() {
               <label htmlFor="termPlayer1">Guess a number 1 to 30:</label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control mb-3"
                 name="termPlayer1"
                 id="termPlayer1"
                 value={termPlayer1}
-                onChange={(e) => {
-                  handleChange(e);
-                  handleScoreUpdate(
-                    "Player1",
-                    e.target.value,
-                    "Number",
-                    termPlayer1
-                  );
-                }}
+                onChange={handleChange}
                 disabled={isInputDisabled}
               />
+              <p
+                className={`text-${isSuccessPlayerOne ? "success" : "danger"}`}
+              >
+                {resultPlayerOne}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  handleSubmit("Player1", termPlayer1, "Number", termPlayer1)
+                }
+                disabled={isInputDisabled}
+              >
+                Submit Answer
+              </button>
             </div>
             <h5 className="card-title">Player 2: {playerTwoName}</h5>
             <div className="mb-3">
               <label htmlFor="termPlayer2">Guess a number 1 to 30:</label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control mb-3"
                 name="termPlayer2"
                 id="termPlayer2"
                 value={termPlayer2}
-                onChange={(e) => {
-                  handleChange(e);
-                  handleScoreUpdate(
-                    "Player2",
-                    e.target.value,
-                    "Number",
-                    termPlayer2
-                  );
-                }}
+                onChange={handleChange}
                 disabled={isInputDisabled}
               />
+              <p
+                className={`text-${isSuccessPlayerTwo ? "success" : "danger"}`}
+              >
+                {resultPlayerTwo}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  handleSubmit("Player2", termPlayer2, "Number", termPlayer2)
+                }
+                disabled={isInputDisabled}
+              >
+                Submit Answer
+              </button>
             </div>
           </div>
         </div>
@@ -309,21 +409,27 @@ function Game() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control mb-3"
                 name="termPlayer1"
                 id="termPlayer1"
                 value={termPlayer1}
-                onChange={(e) => {
-                  handleChange(e);
-                  handleScoreUpdate(
-                    "Player1",
-                    e.target.value,
-                    "Animal",
-                    termPlayer1
-                  );
-                }}
+                onChange={handleChange}
                 disabled={isInputDisabled}
               />
+              <p
+                className={`text-${isSuccessPlayerOne ? "success" : "danger"}`}
+              >
+                {resultPlayerOne}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  handleSubmit("Player1", termPlayer1, "Animal", termPlayer1)
+                }
+                disabled={isInputDisabled}
+              >
+                Submit Answer
+              </button>
             </div>
             <h5 className="card-title">Player 2: {playerTwoName}</h5>
             <div className="mb-3">
@@ -332,21 +438,27 @@ function Game() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control mb-3"
                 name="termPlayer2"
                 id="termPlayer2"
                 value={termPlayer2}
-                onChange={(e) => {
-                  handleChange(e);
-                  handleScoreUpdate(
-                    "Player2",
-                    e.target.value,
-                    "Animal",
-                    termPlayer2
-                  );
-                }}
+                onChange={handleChange}
                 disabled={isInputDisabled}
               />
+              <p
+                className={`text-${isSuccessPlayerTwo ? "success" : "danger"}`}
+              >
+                {resultPlayerTwo}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  handleSubmit("Player2", termPlayer2, "Animal", termPlayer2)
+                }
+                disabled={isInputDisabled}
+              >
+                Submit Answer
+              </button>
             </div>
           </div>
         </div>
@@ -364,21 +476,27 @@ function Game() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control mb-3"
                 name="termPlayer1"
                 id="termPlayer1"
                 value={termPlayer1}
-                onChange={(e) => {
-                  handleChange(e);
-                  handleScoreUpdate(
-                    "Player1",
-                    e.target.value,
-                    "Color",
-                    termPlayer1
-                  );
-                }}
+                onChange={handleChange}
                 disabled={isInputDisabled}
               />
+              <p
+                className={`text-${isSuccessPlayerOne ? "success" : "danger"}`}
+              >
+                {resultPlayerOne}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  handleSubmit("Player1", termPlayer1, "Color", termPlayer1)
+                }
+                disabled={isInputDisabled}
+              >
+                Submit Answer
+              </button>
             </div>
             <h5 className="card-title">Player 2: {playerTwoName}</h5>
             <div className="mb-3">
@@ -387,21 +505,27 @@ function Game() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control mb-3"
                 name="termPlayer2"
                 id="termPlayer2"
                 value={termPlayer2}
-                onChange={(e) => {
-                  handleChange(e);
-                  handleScoreUpdate(
-                    "Player2",
-                    e.target.value,
-                    "Color",
-                    termPlayer2
-                  );
-                }}
+                onChange={handleChange}
                 disabled={isInputDisabled}
               />
+              <p
+                className={`text-${isSuccessPlayerTwo ? "success" : "danger"}`}
+              >
+                {resultPlayerTwo}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  handleSubmit("Player2", termPlayer2, "Color", termPlayer2)
+                }
+                disabled={isInputDisabled}
+              >
+                Submit Answer
+              </button>
             </div>
           </div>
         </div>
@@ -419,21 +543,27 @@ function Game() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control mb-3"
                 name="termPlayer1"
                 id="termPlayer1"
                 value={termPlayer1}
-                onChange={(e) => {
-                  handleChange(e);
-                  handleScoreUpdate(
-                    "Player1",
-                    e.target.value,
-                    "Country",
-                    termPlayer1
-                  );
-                }}
+                onChange={handleChange}
                 disabled={isInputDisabled}
               />
+              <p
+                className={`text-${isSuccessPlayerOne ? "success" : "danger"}`}
+              >
+                {resultPlayerOne}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  handleSubmit("Player1", termPlayer1, "Country", termPlayer1)
+                }
+                disabled={isInputDisabled}
+              >
+                Submit Answer
+              </button>
             </div>
             <h5 className="card-title">Player 2: {playerTwoName}</h5>
             <div className="mb-3">
@@ -442,21 +572,27 @@ function Game() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control mb-3"
                 name="termPlayer2"
                 id="termPlayer2"
                 value={termPlayer2}
-                onChange={(e) => {
-                  handleChange(e);
-                  handleScoreUpdate(
-                    "Player2",
-                    e.target.value,
-                    "Country",
-                    termPlayer2
-                  );
-                }}
+                onChange={handleChange}
                 disabled={isInputDisabled}
               />
+              <p
+                className={`text-${isSuccessPlayerTwo ? "success" : "danger"}`}
+              >
+                {resultPlayerTwo}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  handleSubmit("Player2", termPlayer2, "Country", termPlayer2)
+                }
+                disabled={isInputDisabled}
+              >
+                Submit Answer
+              </button>
             </div>
           </div>
         </div>
@@ -474,21 +610,27 @@ function Game() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control mb-3"
                 name="termPlayer1"
                 id="termPlayer1"
                 value={termPlayer1}
-                onChange={(e) => {
-                  handleChange(e);
-                  handleScoreUpdate(
-                    "Player1",
-                    e.target.value,
-                    "Food",
-                    termPlayer1
-                  );
-                }}
+                onChange={handleChange}
                 disabled={isInputDisabled}
               />
+              <p
+                className={`text-${isSuccessPlayerOne ? "success" : "danger"}`}
+              >
+                {resultPlayerOne}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  handleSubmit("Player1", termPlayer1, "Food", termPlayer1)
+                }
+                disabled={isInputDisabled}
+              >
+                Submit Answer
+              </button>
             </div>
             <h5 className="card-title">Player 2: {playerTwoName}</h5>
             <div className="mb-3">
@@ -497,21 +639,27 @@ function Game() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className="form-control mb-3"
                 name="termPlayer2"
                 id="termPlayer2"
                 value={termPlayer2}
-                onChange={(e) => {
-                  handleChange(e);
-                  handleScoreUpdate(
-                    "Player2",
-                    e.target.value,
-                    "Food",
-                    termPlayer2
-                  );
-                }}
+                onChange={handleChange}
                 disabled={isInputDisabled}
               />
+              <p
+                className={`text-${isSuccessPlayerTwo ? "success" : "danger"}`}
+              >
+                {resultPlayerTwo}
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() =>
+                  handleSubmit("Player2", termPlayer2, "Food", termPlayer2)
+                }
+                disabled={isInputDisabled}
+              >
+                Submit Answer
+              </button>
             </div>
           </div>
         </div>
